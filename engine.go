@@ -47,7 +47,7 @@ func (e *Engine) add(method string, path string, handlers ...Handler) {
 	}
 }
 
-func (e *Engine) Head(path string, handlers ...Handler)    { e.add("HEAD", path, handlers...) }
+func (e *Engine) HEAD(path string, handlers ...Handler)    { e.add("HEAD", path, handlers...) }
 func (e *Engine) GET(path string, handlers ...Handler)     { e.add("GET", path, handlers...) }
 func (e *Engine) PUT(path string, handlers ...Handler)     { e.add("PUT", path, handlers...) }
 func (e *Engine) DELETE(path string, handlers ...Handler)  { e.add("DELETE", path, handlers...) }
