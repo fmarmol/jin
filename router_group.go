@@ -10,7 +10,15 @@ type RouterGroup struct {
 	*gin.RouterGroup
 }
 
-func (e *RouterGroup) add(method string, path string, handlers ...Handler) {
+func (e RouterGroup) Use(middlewares ...Handler) {
+	mids := make([]gin.HandlerFunc, len(middlewares))
+	for index, m := range middlewares {
+		mids[index] = m.ToGin()
+	}
+	e.RouterGroup.Use(mids...)
+}
+
+func (e RouterGroup) add(method string, path string, handlers ...Handler) {
 
 	hs := make([]gin.HandlerFunc, 0, len(handlers))
 	for _, h := range handlers {
@@ -36,10 +44,10 @@ func (e *RouterGroup) add(method string, path string, handlers ...Handler) {
 	}
 }
 
-func (e *RouterGroup) Head(path string, handlers ...Handler)    { e.add("HEAD", path, handlers...) }
-func (e *RouterGroup) GET(path string, handlers ...Handler)     { e.add("GET", path, handlers...) }
-func (e *RouterGroup) PUT(path string, handlers ...Handler)     { e.add("PUT", path, handlers...) }
-func (e *RouterGroup) DELETE(path string, handlers ...Handler)  { e.add("DELETE", path, handlers...) }
-func (e *RouterGroup) POST(path string, handlers ...Handler)    { e.add("POST", path, handlers...) }
-func (e *RouterGroup) PATCH(path string, handlers ...Handler)   { e.add("PATCH", path, handlers...) }
-func (e *RouterGroup) OPTIONS(path string, handlers ...Handler) { e.add("OPTIONS", path, handlers...) }
+func (e RouterGroup) Head(path string, handlers ...Handler)    { e.add("HEAD", path, handlers...) }
+func (e RouterGroup) GET(path string, handlers ...Handler)     { e.add("GET", path, handlers...) }
+func (e RouterGroup) PUT(path string, handlers ...Handler)     { e.add("PUT", path, handlers...) }
+func (e RouterGroup) DELETE(path string, handlers ...Handler)  { e.add("DELETE", path, handlers...) }
+func (e RouterGroup) POST(path string, handlers ...Handler)    { e.add("POST", path, handlers...) }
+func (e RouterGroup) PATCH(path string, handlers ...Handler)   { e.add("PATCH", path, handlers...) }
+func (e RouterGroup) OPTIONS(path string, handlers ...Handler) { e.add("OPTIONS", path, handlers...) }

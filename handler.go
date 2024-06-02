@@ -20,9 +20,11 @@ func (h Handler) ToGin() func(c *gin.Context) {
 			switch e := err.(type) {
 			case Error:
 				c.JSON(e.Code, e.Response)
+				c.Abort()
 				return
 			default: // fallback for generic error
 				c.JSON(http.StatusInternalServerError, e.Error())
+				c.Abort()
 				return
 			}
 		}

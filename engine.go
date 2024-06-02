@@ -23,11 +23,11 @@ func New() Engine {
 }
 
 func (e Engine) add(method string, path string, handlers ...Handler) {
-
-	hs := make([]gin.HandlerFunc, 0, len(handlers))
-	for _, h := range handlers {
-		hs = append(hs, h.ToGin())
+	hs := make([]gin.HandlerFunc, len(handlers))
+	for index, h := range handlers {
+		hs[index] = h.ToGin()
 	}
+
 	switch method {
 	case "HEAD":
 		e.Engine.HEAD(path, hs...)
@@ -48,6 +48,14 @@ func (e Engine) add(method string, path string, handlers ...Handler) {
 	}
 }
 
+func (e Engine) Use(middlewares ...Handler) {
+	mids := make([]gin.HandlerFunc, len(middlewares))
+	for index, m := range middlewares {
+		mids[index] = m.ToGin()
+	}
+	e.Engine.Use(mids...)
+}
+
 func (e Engine) HEAD(path string, handlers ...Handler)    { e.add("HEAD", path, handlers...) }
 func (e Engine) GET(path string, handlers ...Handler)     { e.add("GET", path, handlers...) }
 func (e Engine) PUT(path string, handlers ...Handler)     { e.add("PUT", path, handlers...) }
@@ -56,10 +64,10 @@ func (e Engine) POST(path string, handlers ...Handler)    { e.add("POST", path, 
 func (e Engine) PATCH(path string, handlers ...Handler)   { e.add("PATCH", path, handlers...) }
 func (e Engine) OPTIONS(path string, handlers ...Handler) { e.add("OPTIONS", path, handlers...) }
 
-func (e Engine) Group(path string, handlers ...Handler) *RouterGroup {
-	hs := make([]gin.HandlerFunc, 0, len(handlers))
-	for _, h := range handlers {
-		hs = append(hs, h.ToGin())
+func (e Engine) Group(path string, handlers ...Handler) RouterGroup {
+	hs := make([]gin.HandlerFunc, len(handlers))
+	for index, h := range handlers {
+		hs[index] = h.ToGin()
 	}
-	return &RouterGroup{e.Engine.Group(path, hs...)}
+	return RouterGroup{e.Engine.Group(path, hs...)}
 }
