@@ -3,7 +3,9 @@ package jin
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/a-h/templ"
 	"github.com/fmarmol/fp"
@@ -31,7 +33,14 @@ func (v *Value) UUID() (uuid.UUID, error) {
 	if v == nil || !v.valid {
 		return uuid.Nil, ErrInvalidValue
 	}
-	return uuid.Parse(v.value.(string))
+	switch _v := v.value.(type) {
+	case string:
+		return uuid.Parse(v.value.(string))
+	case uuid.UUID:
+		return _v, nil
+	default:
+		return uuid.Nil, fmt.Errorf("cannot convert type %T into uuid.UUID", reflect.TypeOf(v.value))
+	}
 }
 
 func (v *Value) String() (string, error) {
