@@ -36,6 +36,14 @@ func (v *Value) String() (string, error) {
 	return v.value.(string), nil
 }
 
+func (c Context) GetCookie(name string) (*http.Cookie, error) {
+	return c.Request.Cookie(name)
+}
+
+func (c Context) SetCookie(cookie *http.Cookie) {
+	http.SetCookie(c.Writer, cookie)
+}
+
 func (c Context) ParseForm(dst any) error {
 	err := c.Context.Request.ParseForm()
 	if err != nil {
