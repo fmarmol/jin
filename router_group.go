@@ -1,7 +1,8 @@
-package ginjson
+package jin
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 

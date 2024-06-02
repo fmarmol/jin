@@ -1,17 +1,17 @@
-package ginjson_test
+package jin_test
 
 import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/fmarmol/ginjson"
+	"github.com/fmarmol/jin"
 	"github.com/gin-gonic/gin"
 )
 
 func BenchmarkEngine(b *testing.B) {
-	ginjson.SetRealeaseMode()
-	e := ginjson.New()
-	e.GET("/hello", func(c *ginjson.Context) (any, error) {
+	jin.SetRealeaseMode()
+	e := jin.New()
+	e.GET("/hello", func(c jin.Context) (any, error) {
 		return "world", nil
 	})
 

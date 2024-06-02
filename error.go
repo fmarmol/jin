@@ -1,4 +1,4 @@
-package ginjson
+package jin
 
 import (
 	"fmt"
