@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
+	"github.com/fmarmol/fp"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -33,6 +34,14 @@ func (v *Value) String() (string, error) {
 		return "", ErrInvalidValue
 	}
 	return v.value.(string), nil
+}
+
+func (c Context) ParseForm(dst any) error {
+	err := c.Context.Request.ParseForm()
+	if err != nil {
+		return err
+	}
+	return fp.Parse(dst, c.Request.Form)
 }
 
 func (c Context) Get(key string) *Value {
