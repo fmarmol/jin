@@ -34,6 +34,11 @@ func (c Context) HtmxRedirect(location string) (any, error) {
 	return nil, nil
 }
 
+func (c Context) Redirect(location string) (any, error) {
+	c.Context.Redirect(http.StatusSeeOther, location)
+	return nil, nil
+}
+
 func (c Context) TemplWithCtx(ctx context.Context, component templ.Component) (any, error) {
 	err := component.Render(ctx, c.Writer)
 	if err != nil {
