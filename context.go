@@ -22,22 +22,27 @@ type Value struct {
 
 var ErrInvalidValue = errors.New("invalid value")
 
+func (c Context) Get(key string) *Value {
+	v, ok := c.Context.Get(key)
+	return &Value{value: v, valid: ok}
+}
+
 func (v *Value) UUID() (uuid.UUID, error) {
-	if !v.valid {
+	if v == nil || !v.valid {
 		return uuid.Nil, ErrInvalidValue
 	}
 	return uuid.Parse(v.value.(string))
 }
 
 func (v *Value) String() (string, error) {
-	if !v.valid {
+	if v == nil || !v.valid {
 		return "", ErrInvalidValue
 	}
 	return v.value.(string), nil
 }
 
 func (v *Value) Bool() (bool, error) {
-	if !v.valid {
+	if v == nil || !v.valid {
 		return false, ErrInvalidValue
 	}
 	return v.value.(bool), nil
@@ -57,11 +62,6 @@ func (c Context) ParseForm(dst any) error {
 		return err
 	}
 	return fp.Parse(dst, c.Request.Form)
-}
-
-func (c Context) Get(key string) *Value {
-	v, ok := c.Context.Get(key)
-	return &Value{value: v, valid: ok}
 }
 
 func (c Context) BadRequest(response any) (any, Error) {
