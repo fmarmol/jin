@@ -30,7 +30,7 @@ func (v *Value) UUID() (uuid.UUID, error) {
 
 func (v *Value) String() (string, error) {
 	if !v.valid {
-		return uuid.Nil, ErrInvalidValue
+		return "", ErrInvalidValue
 	}
 	return v.value.(string), nil
 }

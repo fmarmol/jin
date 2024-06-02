@@ -6,8 +6,8 @@ toolchain go1.22.0
 
 require (
 	github.com/a-h/templ v0.2.707
-	github.com/fmarmol/ginjson v0.0.0-20230522194212-b0d807c17e30
 	github.com/gin-gonic/gin v1.9.0
+	github.com/google/uuid v1.6.0
 )
 
 require (
