@@ -2,14 +2,42 @@ package jin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/a-h/templ"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type Context struct {
 	*gin.Context
+}
+
+type Value struct {
+	value any
+	valid bool
+}
+
+var ErrInvalidValue = errors.New("invalid value")
+
+func (v *Value) UUID() (uuid.UUID, error) {
+	if !v.valid {
+		return uuid.Nil, ErrInvalidValue
+	}
+	return uuid.Parse(v.value.(string))
+}
+
+func (v *Value) String() (string, error) {
+	if !v.valid {
+		return uuid.Nil, ErrInvalidValue
+	}
+	return v.value.(string), nil
+}
+
+func (c Context) Get(key string) *Value {
+	v, ok := c.Context.Get(key)
+	return &Value{value: v, valid: ok}
 }
 
 func (c Context) BadRequest(response any) (any, Error) {
