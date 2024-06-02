@@ -17,6 +17,7 @@ func (h Handler) ToGin() func(c *gin.Context) {
 				return
 			}
 		} else {
+			c.Error(err)
 			switch e := err.(type) {
 			case Error:
 				c.JSON(e.Code, e.Response)
