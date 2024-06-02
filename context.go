@@ -36,6 +36,13 @@ func (v *Value) String() (string, error) {
 	return v.value.(string), nil
 }
 
+func (v *Value) Bool() (bool, error) {
+	if !v.valid {
+		return false, ErrInvalidValue
+	}
+	return v.value.(bool), nil
+}
+
 func (c Context) GetCookie(name string) (*http.Cookie, error) {
 	return c.Request.Cookie(name)
 }
