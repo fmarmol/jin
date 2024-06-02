@@ -57,6 +57,10 @@ func (c Context) InternalErr(response any) (any, Error) {
 	return nil, Error{http.StatusInternalServerError, response}
 }
 
+func (c Context) Unauthorized(response any) (any, Error) {
+	return nil, Error{http.StatusUnauthorized, response}
+}
+
 func (c Context) NotFound(response any) (any, Error) {
 	return nil, Error{http.StatusNotFound, response}
 }
