@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/fmarmol/fp"
@@ -63,6 +64,16 @@ func (c Context) GetCookie(name string) (*http.Cookie, error) {
 
 func (c Context) SetCookie(cookie *http.Cookie) {
 	http.SetCookie(c.Writer, cookie)
+}
+
+func (c Context) DeleteCookie(name string) error {
+	cookie, err := c.GetCookie(name)
+	if err != nil {
+		return err
+	}
+	cookie.Expires = time.Time{}
+	c.SetCookie(cookie)
+	return nil
 }
 
 func (c Context) ParseForm(dst any) error {
