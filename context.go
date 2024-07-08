@@ -71,7 +71,7 @@ func (c Context) DeleteCookie(name string) error {
 	if err != nil {
 		return err
 	}
-	cookie.Expires = time.Time{}
+	cookie.Expires = time.Now().AddDate(-1, 0, 0)
 	c.SetCookie(cookie)
 	return nil
 }
