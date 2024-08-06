@@ -31,7 +31,7 @@ func (c Context) Get(key string) *Value {
 }
 
 func (c Context) Param(key string) *Value {
-	v := c.Param(key)
+	v := c.Context.Param(key)
 	return &Value{value: v, valid: true}
 }
 
