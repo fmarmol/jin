@@ -30,6 +30,11 @@ func (c Context) Get(key string) *Value {
 	return &Value{value: v, valid: ok}
 }
 
+func (c Context) Param(key string) *Value {
+	v := c.Param(key)
+	return &Value{value: v, valid: true}
+}
+
 func (v *Value) UUID() (uuid.UUID, error) {
 	if v == nil || !v.valid {
 		return uuid.Nil, ErrInvalidValue
