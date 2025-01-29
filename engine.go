@@ -2,6 +2,9 @@ package jin
 
 import (
 	"fmt"
+	"io/fs"
+	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,6 +23,25 @@ func SetDebugMode() {
 
 func New() Engine {
 	return Engine{Engine: gin.New()}
+}
+
+func subFs(path string, fsys fs.FS) fs.FS {
+	var err error
+	paths := strings.Split(path, "/")
+	current := fsys
+	for _, p := range paths {
+		current, err = fs.Sub(current, p)
+		if err != nil {
+			panic(err)
+		}
+	}
+	return current
+}
+
+// StaticFS accept a relative path and will generate the proper subFs wanted using /a/b for example
+func (e Engine) StaticFS(relativePath string, fsys fs.FS) {
+	subFsys := subFs(relativePath, fsys)
+	e.Engine.StaticFS(relativePath, http.FS(subFsys))
 }
 
 func (e Engine) add(method string, path string, handlers ...Handler) {
