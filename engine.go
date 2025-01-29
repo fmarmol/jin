@@ -25,7 +25,7 @@ func New() Engine {
 	return Engine{Engine: gin.New()}
 }
 
-func subFs(path string, fsys fs.FS) fs.FS {
+func subFs(fsys fs.FS, path string) fs.FS {
 	var err error
 	paths := strings.Split(path, "/")
 	current := fsys
@@ -39,8 +39,8 @@ func subFs(path string, fsys fs.FS) fs.FS {
 }
 
 // StaticFS accept a relative path and will generate the proper subFs wanted using /a/b for example
-func (e Engine) StaticFS(relativePath string, fsys fs.FS) {
-	subFsys := subFs(relativePath, fsys)
+func (e Engine) StaticFS(relativePath string, fsys fs.FS, pathfs string) {
+	subFsys := subFs(fsys, pathfs)
 	e.Engine.StaticFS(relativePath, http.FS(subFsys))
 }
 
