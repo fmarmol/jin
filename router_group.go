@@ -10,6 +10,12 @@ type RouterGroup struct {
 	*gin.RouterGroup
 }
 
+func (e RouterGroup) Group(path string) RouterGroup {
+	subGroup := e.RouterGroup.Group(path)
+	return RouterGroup{RouterGroup: subGroup}
+
+}
+
 func (e RouterGroup) Use(middlewares ...Handler) {
 	mids := make([]gin.HandlerFunc, len(middlewares))
 	for index, m := range middlewares {
